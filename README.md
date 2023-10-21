@@ -1,1 +1,1 @@
-# LinguistAIapp
+# Linguist AI MVP
