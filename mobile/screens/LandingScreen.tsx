@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     justifyContent: "center",
-    flex: 1,
+    flex: 2,
   },
   logoText: {
     fontSize: 48,
