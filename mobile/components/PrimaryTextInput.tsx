@@ -4,7 +4,7 @@ import Colors from "../theme/colors";
 
 interface PrimaryTextInputProps {
     placeholder: string;
-    secureTextEntry: boolean;
+    secureTextEntry?: boolean;
 }
 
 const PrimaryTextInput = (props: PrimaryTextInputProps) => {
