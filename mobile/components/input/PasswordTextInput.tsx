@@ -1,12 +1,7 @@
 import PrimaryTextInput, { PrimaryTextInputProps } from "./PrimaryTextInput";
 
-interface PasswordTextInputProps extends Partial<PrimaryTextInputProps> {
-  name?: string;
-  label?: string;
-  placeholder?: string;
-  rules?: any;
-  defaultValue?: string;
-}
+export interface PasswordTextInputProps
+  extends Partial<PrimaryTextInputProps> {}
 
 const PasswordTextInput = (props: PasswordTextInputProps) => {
   return (

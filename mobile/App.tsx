@@ -1,9 +1,10 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native";
 import LandingScreen from "./screens/LandingScreen";
-import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./screens/LoginScreen";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomNavigation from "./components/navigation/BottomNavigation";
+import RegisterScreen from "./screens/RegisterScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ export default function App() {
           component={BottomNavigation}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,18 +1,18 @@
 import {
   StyleSheet,
+  Text,
   TextInput,
   TextInputProps,
   View,
-  Text,
 } from "react-native";
 
-import Colors from "../../theme/colors";
 import { useController, useFormContext } from "react-hook-form";
+import Colors from "../../theme/colors";
 
 export interface PrimaryTextInputProps extends TextInputProps {
   name: string;
   label: string;
-  rules: any;
+  rules: Object;
   defaultValue: string;
 }
 
@@ -40,9 +40,9 @@ const ControlledInput = (props: PrimaryTextInputProps) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
-      <View style={styles.inputContainer}>
+      <View>
         <TextInput
           style={styles.input}
           onChangeText={field.onChange}
@@ -56,17 +56,19 @@ const ControlledInput = (props: PrimaryTextInputProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
-  label: {},
-  inputContainer: {},
+  label: {
+    fontSize: 14,
+    color: Colors.gray[900],
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
   input: {
     height: 60,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
     borderColor: Colors.gray[300],
     color: Colors.gray[600],
-    borderRadius: 16,
+    borderRadius: 8,
   },
 });
 
