@@ -1,12 +1,6 @@
 import PrimaryTextInput, { PrimaryTextInputProps } from "./PrimaryTextInput";
 
-interface EmailTextInputProps extends Partial<PrimaryTextInputProps> {
-  name?: string;
-  label?: string;
-  placeholder?: string;
-  rules?: any;
-  defaultValue?: string;
-}
+interface EmailTextInputProps extends Partial<PrimaryTextInputProps> {}
 
 const EmailTextInput = (props: EmailTextInputProps) => {
   return (
