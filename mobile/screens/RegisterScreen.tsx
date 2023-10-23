@@ -8,7 +8,7 @@ import PasswordInputWithRequirements, {
   Requirement,
 } from "../containers/PasswordInputWithRequirements";
 
-type FormValues = {
+type RegisterFormValues = {
   userName: string;
   email: string;
   password: string;
@@ -16,7 +16,7 @@ type FormValues = {
 };
 
 const RegisterScreen = () => {
-  const methods = useForm({
+  const methods = useForm<RegisterFormValues>({
     defaultValues: {
       userName: "",
       email: "",
@@ -24,6 +24,17 @@ const RegisterScreen = () => {
       repeatPassword: "",
     },
   });
+  const values = methods.watch();
+
+  const onSubmit = (data: RegisterFormValues) => {};
+
+  const onError = (errors: any, e: any) => {
+    if (methods.formState.isValid) {
+      console.log("No errors. This should not be called.");
+    }
+
+    console.log(errors);
+  };
 
   const passwordRequirements: Requirement[] = [
     {
@@ -72,8 +83,10 @@ const RegisterScreen = () => {
           label="Repeat password"
           name="repeatPassword"
         />
+        <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
+          REGISTER
+        </PrimaryButton>
       </FormProvider>
-      <PrimaryButton>REGISTER</PrimaryButton>
     </View>
   );
 };
