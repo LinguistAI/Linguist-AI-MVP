@@ -10,6 +10,8 @@ import Colors from "../theme/colors";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 
+const avatarPlaceholderImg = require("../assets/profile-default.jpg");
+
 const ProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(
     "https://thispersondoesnotexist.com"
@@ -39,6 +41,7 @@ const ProfileScreen = () => {
           source={{
             uri: profileImage,
           }}
+          defaultSource={avatarPlaceholderImg}
           style={styles.profileImage}
         />
       </TouchableWithoutFeedback>
