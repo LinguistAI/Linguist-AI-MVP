@@ -48,6 +48,7 @@ const PasswordInputWithRequirements = (
 
   const requirementsFeedbackDisplay = requirements.map((requirement) => (
     <PasswordRequirement
+      key={requirement.label}
       text={requirement.label}
       meets={requirement.re.test(password)}
     />
