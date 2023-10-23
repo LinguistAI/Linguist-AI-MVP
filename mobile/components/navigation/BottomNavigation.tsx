@@ -16,7 +16,12 @@ const BottomNavigation = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <IonIcons name="home-outline" size={size} color={color} />
+            <IonIcons
+              name="home-outline"
+              size={size}
+              color={color}
+              padding={8}
+            />
           ),
         }}
       />
@@ -25,7 +30,12 @@ const BottomNavigation = () => {
         component={ChatScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <IonIcons name="chatbox-outline" size={size} color={color} />
+            <IonIcons
+              name="chatbox-outline"
+              size={size}
+              color={color}
+              padding={8}
+            />
           ),
         }}
       />
@@ -34,7 +44,12 @@ const BottomNavigation = () => {
         component={LeaderboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <IonIcons name="podium-outline" size={size} color={color} />
+            <IonIcons
+              name="podium-outline"
+              size={size}
+              color={color}
+              padding={8}
+            />
           ),
         }}
       />
@@ -43,7 +58,12 @@ const BottomNavigation = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <IonIcons name="person-outline" size={size} color={color} />
+            <IonIcons
+              name="person-outline"
+              size={size}
+              color={color}
+              padding={8}
+            />
           ),
         }}
       />
@@ -52,7 +72,12 @@ const BottomNavigation = () => {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <IonIcons name="settings-outline" size={size} color={color} />
+            <IonIcons
+              name="settings-outline"
+              size={size}
+              color={color}
+              padding={8}
+            />
           ),
         }}
       />
