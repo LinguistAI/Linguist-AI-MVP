@@ -1,10 +1,6 @@
 import PrimaryTextInput, { PrimaryTextInputProps } from "./PrimaryTextInput";
 
-interface PasswordTextInputProps
-  extends Omit<
-    PrimaryTextInputProps,
-    "name" | "label" | "rules" | "defaultValue"
-  > {
+interface PasswordTextInputProps extends Partial<PrimaryTextInputProps> {
   name?: string;
   label?: string;
   placeholder?: string;

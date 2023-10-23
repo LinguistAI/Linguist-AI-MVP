@@ -1,10 +1,6 @@
 import PrimaryTextInput, { PrimaryTextInputProps } from "./PrimaryTextInput";
 
-interface EmailTextInputProps
-  extends Omit<
-    PrimaryTextInputProps,
-    "name" | "label" | "rules" | "defaultValue"
-  > {
+interface EmailTextInputProps extends Partial<PrimaryTextInputProps> {
   name?: string;
   label?: string;
   placeholder?: string;
