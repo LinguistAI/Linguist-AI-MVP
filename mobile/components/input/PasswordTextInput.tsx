@@ -14,6 +14,7 @@ const PasswordTextInput = (props: PasswordTextInputProps) => {
       name={props.name ? props.name : "password"}
       label={props.label ? props.label : "Password"}
       placeholder={props.placeholder ? props.placeholder : "Password"}
+      secureTextEntry={true}
       rules={
         props.rules
           ? props.rules
