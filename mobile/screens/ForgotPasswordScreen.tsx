@@ -9,22 +9,22 @@ import {
 import EmailTextInput from "../components/input/EmailTextInput";
 import Colors from "../theme/colors";
 
-type FormValues = {
+type ForgotPasswordFormValues = {
   email: string;
 };
 
 const ForgotPasswordScreen = () => {
-  const methods = useForm({
+  const methods = useForm<ForgotPasswordFormValues>({
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
     console.log(data);
   };
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
+  const onError: SubmitErrorHandler<ForgotPasswordFormValues> = (errors, e) => {
     return console.log(errors);
   };
 
