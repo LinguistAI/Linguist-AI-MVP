@@ -12,6 +12,9 @@ const LandingScreen = (props: LandingScreenProps) => {
   const navigateLogin = () => {
     props.navigation.navigate("Login");
   };
+  const navigateRegister = () => {
+    props.navigation.navigate("Register");
+  };
 
   return (
     <View style={styles.container}>
@@ -44,7 +47,9 @@ const LandingScreen = (props: LandingScreenProps) => {
           <Text style={styles.sectionDescription}>Start your journey now.</Text>
         </View>
         <View style={styles.sectionButton}>
-          <SecondaryButton>CREATE AN ACCOUNT</SecondaryButton>
+          <SecondaryButton onPress={navigateRegister}>
+            CREATE AN ACCOUNT
+          </SecondaryButton>
         </View>
       </View>
     </View>
