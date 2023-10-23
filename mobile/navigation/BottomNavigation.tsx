@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../../screens/HomeScreen";
-import ChatScreen from "../../screens/ChatScreen";
-import LeaderboardScreen from "../../screens/LeaderboardScreen";
-import ProfileScreen from "../../screens/ProfileScreen";
-import SettingsScreen from "../../screens/SettingsScreen";
+import HomeScreen from "../screens/HomeScreen";
+import ChatScreen from "../screens/ChatScreen";
+import LeaderboardScreen from "../screens/LeaderboardScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import IonIcons from "@expo/vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();

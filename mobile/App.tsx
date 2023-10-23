@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native";
 import LandingScreen from "./screens/LandingScreen";
 import LoginScreen from "./screens/LoginScreen";
-import BottomNavigation from "./components/navigation/BottomNavigation";
+import BottomNavigation from "./navigation/BottomNavigation";
 import RegisterScreen from "./screens/RegisterScreen";
 
 export default function App() {
