@@ -4,7 +4,15 @@ import SecondaryButton from "../components/SecondaryButton";
 import Title from "../components/Title";
 import Colors from "../theme/colors";
 
-const LandingScreen = () => {
+interface LandingScreenProps {
+  navigation: any;
+}
+
+const LandingScreen = (props: LandingScreenProps) => {
+  const navigateLogin = () => {
+    props.navigation.navigate("Login");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -16,7 +24,7 @@ const LandingScreen = () => {
           <Text style={styles.sectionDescription}>Get back on your path!</Text>
         </View>
         <View style={styles.sectionButton}>
-          <PrimaryButton>LOG IN</PrimaryButton>
+          <PrimaryButton onPress={navigateLogin}>LOG IN</PrimaryButton>
         </View>
       </View>
       <View>
