@@ -32,8 +32,6 @@ const RegisterScreen = () => {
     if (methods.formState.isValid) {
       console.log("No errors. This should not be called.");
     }
-
-    console.log(errors);
   };
 
   const passwordRequirements: Requirement[] = [

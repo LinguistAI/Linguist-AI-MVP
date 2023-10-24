@@ -1,12 +1,16 @@
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
-import { NotificationObject } from "../../hooks/useNotifications";
+import ActionIcon from "../../components/ActionIcon";
+import useNotifications, {
+  NotificationObject,
+} from "../../hooks/useNotifications";
 import Colors from "../../theme/colors";
-
 interface NotificationProps {
   notification: NotificationObject;
 }
 
 const Notification = (props: NotificationProps) => {
+  const { remove } = useNotifications();
   const { notification } = props;
 
   const getNotificationBgStyle = () => {
@@ -25,12 +29,20 @@ const Notification = (props: NotificationProps) => {
   return (
     <View style={[styles.container, getNotificationBgStyle()]}>
       <View style={styles.notificationCard}>
-        <Text style={[styles.title, { color: notification?.titleColor }]}>
-          {notification.title}
-        </Text>
-        <Text style={[styles.body, { color: notification?.bodyColor }]}>
-          {notification.body}
-        </Text>
+        <View style={styles.notificationCardContainer}>
+          <Text style={[styles.title, { color: notification?.titleColor }]}>
+            {notification.title}
+          </Text>
+          <Text style={[styles.body, { color: notification?.bodyColor }]}>
+            {notification.body}
+          </Text>
+        </View>
+        <View>
+          <ActionIcon
+            icon={<Ionicons name="close" size={24} color="black" />}
+            onPress={() => remove(notification.id!)}
+          />
+        </View>
       </View>
     </View>
   );
@@ -47,7 +59,13 @@ const styles = StyleSheet.create({
   notificationCard: {
     padding: 20,
     marginBottom: 10,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
+  notificationCardContainer: {},
+  messageSection: {},
+  actionsSection: {},
   title: {
     fontWeight: "bold",
     fontSize: 18,

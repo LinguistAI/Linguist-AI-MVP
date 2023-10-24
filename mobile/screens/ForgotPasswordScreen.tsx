@@ -1,11 +1,11 @@
-import { StyleSheet, View, Text } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
 import {
-  useForm,
   FormProvider,
-  SubmitHandler,
   SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
 } from "react-hook-form";
+import { StyleSheet, Text, View } from "react-native";
+import PrimaryButton from "../components/PrimaryButton";
 import EmailTextInput from "../components/input/EmailTextInput";
 import Colors from "../theme/colors";
 
@@ -24,9 +24,10 @@ const ForgotPasswordScreen = () => {
     console.log(data);
   };
 
-  const onError: SubmitErrorHandler<ForgotPasswordFormValues> = (errors, e) => {
-    return console.log(errors);
-  };
+  const onError: SubmitErrorHandler<ForgotPasswordFormValues> = (
+    errors,
+    e
+  ) => {};
 
   return (
     <View style={styles.container}>
@@ -38,7 +39,7 @@ const ForgotPasswordScreen = () => {
             exists in our system.
           </Text>
           <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
-            Reset Password
+            RESET PASSWORD
           </PrimaryButton>
         </View>
       </FormProvider>
@@ -51,13 +52,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 32,
     padding: 20,
+    justifyContent: "flex-start",
   },
   hintText: {
     color: Colors.gray[600],
   },
   mainSection: {
     flex: 5,
-    justifyContent: "center",
     gap: 15,
   },
 });

@@ -1,15 +1,21 @@
 import { StyleSheet, View } from "react-native";
+import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import useNotifications from "../../hooks/useNotifications";
 import Notification from "./Notification";
 
 const Notifications = () => {
   const { notifications } = useNotifications();
 
-  console.log(notifications);
   return (
     <View style={styles.container}>
-      {notifications.map((notification) => (
-        <Notification key={notification.id} notification={notification} />
+      {notifications.map((notification, index) => (
+        <Animated.View
+          key={notification.id}
+          entering={FadeInLeft}
+          exiting={FadeOutLeft}
+        >
+          <Notification notification={notification} />
+        </Animated.View>
       ))}
     </View>
   );
