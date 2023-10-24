@@ -7,6 +7,9 @@ const avatarPlaceholderImg = require("../assets/profile-default.jpg");
 
 const LeaderboardScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
+  const buttons = ["Global", "Friends"];
+
+  let currentButton = buttons[selectedIndex];
 
   return (
     <View
@@ -27,7 +30,7 @@ const LeaderboardScreen = () => {
       </View>
 
       <ButtonGroup
-        buttons={["Global", "Friends"]}
+        buttons={buttons}
         selection={selectedIndex}
         setSelection={setSelectedIndex}
         style={{ height: 30 }}
