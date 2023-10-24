@@ -4,9 +4,8 @@ import PrimaryButton from "../components/PrimaryButton";
 import EmailTextInput from "../components/input/EmailTextInput";
 import PasswordTextInput from "../components/input/PasswordTextInput";
 import PrimaryTextInput from "../components/input/PrimaryTextInput";
-import PasswordInputWithRequirements, {
-  Requirement,
-} from "../containers/PasswordInputWithRequirements";
+import PasswordInputWithRequirements from "../containers/PasswordInputWithRequirements/PasswordInputWithRequirements";
+import { Requirement } from "../containers/PasswordInputWithRequirements/Requirement";
 
 type RegisterFormValues = {
   userName: string;
