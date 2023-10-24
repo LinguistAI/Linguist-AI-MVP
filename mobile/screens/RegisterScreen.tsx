@@ -6,6 +6,7 @@ import PasswordTextInput from "../components/input/PasswordTextInput";
 import PrimaryTextInput from "../components/input/PrimaryTextInput";
 import PasswordInputWithRequirements from "../containers/PasswordInputWithRequirements/PasswordInputWithRequirements";
 import { Requirement } from "../containers/PasswordInputWithRequirements/Requirement";
+import useNotifications from "../hooks/useNotifications";
 
 type RegisterFormValues = {
   userName: string;

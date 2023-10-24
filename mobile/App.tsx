@@ -1,11 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { atom } from "jotai";
 import { SafeAreaView } from "react-native";
+import Notifications from "./containers/NotificationsContainer/Notifications";
+import BottomNavigation from "./navigation/BottomNavigation";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import LandingScreen from "./screens/LandingScreen";
 import LoginScreen from "./screens/LoginScreen";
-import BottomNavigation from "./navigation/BottomNavigation";
 import RegisterScreen from "./screens/RegisterScreen";
-import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -27,6 +29,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
       </Stack.Navigator>
+      <Notifications />
     </NavigationContainer>
   );
 }
