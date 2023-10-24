@@ -6,6 +6,7 @@ import {
   View,
 } from "react-native";
 
+import { ErrorMessage } from "@hookform/error-message";
 import { useController, useFormContext } from "react-hook-form";
 import Colors from "../../theme/colors";
 
@@ -51,6 +52,12 @@ const ControlledInput = (props: PrimaryTextInputProps) => {
           {...props}
         />
       </View>
+      <ErrorMessage
+        name={props.name}
+        render={({ message }) => (
+          <Text style={styles.errorMessage}>{message}</Text>
+        )}
+      />
     </View>
   );
 };
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.gray[900],
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 6,
   },
   input: {
     height: 60,
@@ -69,6 +76,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray[300],
     color: Colors.gray[600],
     borderRadius: 8,
+  },
+  errorMessage: {
+    color: "red",
+    marginLeft: 10,
+    marginTop: 5,
   },
 });
 
