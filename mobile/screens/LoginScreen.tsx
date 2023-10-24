@@ -15,7 +15,11 @@ type FormValues = {
   password: string;
 };
 
-const LoginScreen = () => {
+interface LoginScreenProps {
+  navigation: any;
+}
+
+const LoginScreen = (props: LoginScreenProps) => {
   const methods = useForm({
     defaultValues: {
       email: "",
@@ -25,6 +29,7 @@ const LoginScreen = () => {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
+    props.navigation.navigate("Main");
   };
 
   const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
