@@ -1,43 +1,30 @@
 import { StyleSheet, View, Text } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
-import PrimaryTextInput from "../components/input/PrimaryTextInput";
 import {
   useForm,
   FormProvider,
   SubmitHandler,
   SubmitErrorHandler,
 } from "react-hook-form";
-import PasswordTextInput from "../components/input/PasswordTextInput";
 import EmailTextInput from "../components/input/EmailTextInput";
 import Colors from "../theme/colors";
 
-type FormValues = {
+type ForgotPasswordFormValues = {
   email: string;
-  password: string;
 };
 
-interface LoginScreenProps {
-  navigation: any;
-}
-
-const LoginScreen = (props: LoginScreenProps) => {
-  const methods = useForm({
+const ForgotPasswordScreen = () => {
+  const methods = useForm<ForgotPasswordFormValues>({
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const onForgotPassword = () => {
-    props.navigation.navigate("Forgot Password");
-  };
-
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
     console.log(data);
-    props.navigation.navigate("Main");
   };
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
+  const onError: SubmitErrorHandler<ForgotPasswordFormValues> = (errors, e) => {
     return console.log(errors);
   };
 
@@ -46,12 +33,12 @@ const LoginScreen = (props: LoginScreenProps) => {
       <FormProvider {...methods}>
         <View style={styles.mainSection}>
           <EmailTextInput />
-          <PasswordTextInput />
-          <Text style={styles.forgotPassword} onPress={onForgotPassword}>
-            Forgot Password?
+          <Text style={styles.hintText}>
+            You will receive an email to create a new password if your email
+            exists in our system.
           </Text>
           <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
-            Login
+            Reset Password
           </PrimaryButton>
         </View>
       </FormProvider>
@@ -60,15 +47,13 @@ const LoginScreen = (props: LoginScreenProps) => {
 };
 
 const styles = StyleSheet.create({
-  forgotPassword: {
-    color: Colors.primary[300],
-    textAlign: "center",
-    textDecorationLine: "underline",
-  },
   container: {
     flex: 1,
     marginVertical: 32,
     padding: 20,
+  },
+  hintText: {
+    color: Colors.gray[600],
   },
   mainSection: {
     flex: 5,
@@ -77,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default ForgotPasswordScreen;

@@ -5,6 +5,7 @@ import LandingScreen from "./screens/LandingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import BottomNavigation from "./navigation/BottomNavigation";
 import RegisterScreen from "./screens/RegisterScreen";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -24,6 +25,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
