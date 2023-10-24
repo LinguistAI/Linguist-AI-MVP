@@ -19,8 +19,9 @@ export interface PrimaryTextInputProps extends TextInputProps {
 
 const PrimaryTextInput = (props: PrimaryTextInputProps) => {
   const { name } = props;
-
   const formContext = useFormContext();
+
+  console.log(formContext.formState.errors);
 
   if (!formContext || !name) {
     const msg = !formContext
@@ -34,18 +35,25 @@ const PrimaryTextInput = (props: PrimaryTextInputProps) => {
 };
 
 const ControlledInput = (props: PrimaryTextInputProps) => {
-  const { field } = useController({
+  const { field, formState } = useController({
     name: props.name,
     rules: props.rules,
     defaultValue: props.defaultValue,
   });
+
+  // const getErrorBorder = () => {
+  //   const errorKeyNames = Object.keys(formState.errors);
+  //   if (formState.isSubmitted && !formState.isDirty && !formState.isValid) {
+  //     return styles.errorBorder;
+  //   }
+  // };
 
   return (
     <View>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
       <View>
         <TextInput
-          style={styles.input}
+          style={[styles.input]}
           onChangeText={field.onChange}
           onBlur={field.onBlur}
           value={field.value}
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: 1,
     padding: 10,
-    borderColor: Colors.gray[300],
+    borderColor: Colors.gray[400],
     color: Colors.gray[600],
     borderRadius: 8,
   },
@@ -81,6 +89,9 @@ const styles = StyleSheet.create({
     color: "red",
     marginLeft: 10,
     marginTop: 5,
+  },
+  errorBorder: {
+    borderColor: Colors.red[500],
   },
 });
 

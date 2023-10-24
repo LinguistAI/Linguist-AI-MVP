@@ -22,6 +22,7 @@ interface LoginScreenProps {
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
+  const { add } = useNotifications();
   const methods = useForm({
     defaultValues: {
       email: "",
@@ -38,9 +39,7 @@ const LoginScreen = (props: LoginScreenProps) => {
     props.navigation.navigate("Main");
   };
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
-    return console.log(errors);
-  };
+  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {};
 
   return (
     <View style={styles.container}>
@@ -70,6 +69,7 @@ const styles = StyleSheet.create({
     color: Colors.primary[300],
     textAlign: "center",
     textDecorationLine: "underline",
+    fontSize: 16,
   },
   mainSection: {
     flex: 5,
