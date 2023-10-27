@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.security;
+package app.linguistai.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

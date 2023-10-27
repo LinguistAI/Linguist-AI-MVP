@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.service;
+package app.linguistai.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,15 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import app.linguistai.linguistai.model.User;
-import app.linguistai.linguistai.repository.IAccountRepository;
-import app.linguistai.linguistai.request.QChangePassword;
-import app.linguistai.linguistai.request.QUserLogin;
-import app.linguistai.linguistai.response.RLoginUser;
-import app.linguistai.linguistai.response.RRefreshToken;
-import app.linguistai.linguistai.security.JWTFilter;
-import app.linguistai.linguistai.security.JWTUserService;
-import app.linguistai.linguistai.security.JWTUtils;
+import app.linguistai.model.User;
+import app.linguistai.repository.IAccountRepository;
+import app.linguistai.request.QChangePassword;
+import app.linguistai.request.QUserLogin;
+import app.linguistai.response.RLoginUser;
+import app.linguistai.response.RRefreshToken;
+import app.linguistai.security.JWTFilter;
+import app.linguistai.security.JWTUserService;
+import app.linguistai.security.JWTUtils;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

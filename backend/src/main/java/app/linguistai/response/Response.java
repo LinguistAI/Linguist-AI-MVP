@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.response;
+package app.linguistai.response;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;

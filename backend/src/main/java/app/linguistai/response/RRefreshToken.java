@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.response;
+package app.linguistai.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.controller;
+package app.linguistai.controller;
 
 import java.util.List;
 import org.springframework.http.HttpHeaders;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.linguistai.linguistai.exception.ExceptionLogger;
-import app.linguistai.linguistai.model.User;
-import app.linguistai.linguistai.request.QChangePassword;
-import app.linguistai.linguistai.request.QUserLogin;
-import app.linguistai.linguistai.response.RLoginUser;
-import app.linguistai.linguistai.response.RRefreshToken;
-import app.linguistai.linguistai.response.Response;
-import app.linguistai.linguistai.service.AccountService;
+import app.linguistai.exception.ExceptionLogger;
+import app.linguistai.model.User;
+import app.linguistai.request.QChangePassword;
+import app.linguistai.request.QUserLogin;
+import app.linguistai.response.RLoginUser;
+import app.linguistai.response.RRefreshToken;
+import app.linguistai.response.Response;
+import app.linguistai.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 

@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.exception;
+package app.linguistai.exception;
 
 import lombok.Data;
 

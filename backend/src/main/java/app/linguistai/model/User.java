@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.model;
+package app.linguistai.model;
 
 import java.util.UUID;
 

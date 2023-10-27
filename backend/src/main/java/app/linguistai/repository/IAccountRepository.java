@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.repository;
+package app.linguistai.repository;
 
 import java.util.UUID;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.linguistai.linguistai.model.User;
+import app.linguistai.model.User;
 
 // @Qualifier("accountjpa")
 @Repository

@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.request;
+package app.linguistai.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;

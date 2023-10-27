@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.security;
+package app.linguistai.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

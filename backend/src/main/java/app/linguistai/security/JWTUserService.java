@@ -1,4 +1,4 @@
-package app.linguistai.linguistai.security;
+package app.linguistai.security;
 
 import java.util.Collections;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import app.linguistai.linguistai.model.User;
-import app.linguistai.linguistai.repository.IAccountRepository;
+import app.linguistai.model.User;
+import app.linguistai.repository.IAccountRepository;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import lombok.AllArgsConstructor;

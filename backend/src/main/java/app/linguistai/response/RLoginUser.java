@@ -1,8 +1,8 @@
-package app.linguistai.linguistai.response;
+package app.linguistai.response;
 
 import java.util.UUID;
 
-import app.linguistai.linguistai.model.User;
+import app.linguistai.model.User;
 import jakarta.persistence.Id;
 
 import lombok.Data;
