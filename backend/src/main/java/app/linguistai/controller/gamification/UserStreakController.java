@@ -2,24 +2,16 @@ package app.linguistai.controller.gamification;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import app.linguistai.exception.ExceptionLogger;
 import app.linguistai.exception.NotFoundException;
-import app.linguistai.request.QUserLogin;
-import app.linguistai.response.RLoginUser;
 import app.linguistai.response.Response;
-import app.linguistai.service.AccountService;
 import app.linguistai.service.gamification.UserStreakService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
