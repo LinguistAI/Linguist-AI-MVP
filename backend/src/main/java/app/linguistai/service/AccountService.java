@@ -16,6 +16,7 @@ import app.linguistai.response.RRefreshToken;
 import app.linguistai.security.JWTFilter;
 import app.linguistai.security.JWTUserService;
 import app.linguistai.security.JWTUtils;
+import app.linguistai.service.gamification.IUserStreakService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,6 +33,8 @@ public class AccountService {
 
     @Autowired
     private final JWTUtils jwtUtils;
+
+    private final IUserStreakService userStreakService;
 
     public RLoginUser login(QUserLogin user) throws Exception {
         try {
@@ -122,6 +125,9 @@ public class AccountService {
 
                 System.out.println("user_id: " + user.getId());
                 User newUser = accountRepository.save(user);
+
+                // Create UserStreak for the new user
+                userStreakService.createUserStreak(newUser);
 
                 System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
                 return newUser;
