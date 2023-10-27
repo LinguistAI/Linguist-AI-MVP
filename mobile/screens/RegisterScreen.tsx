@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, StyleSheet, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
@@ -7,6 +8,8 @@ import PrimaryTextInput from "../components/input/PrimaryTextInput";
 import PasswordInputWithRequirements from "../containers/PasswordInputWithRequirements/PasswordInputWithRequirements";
 import { Requirement } from "../containers/PasswordInputWithRequirements/Requirement";
 import useNotifications from "../hooks/useNotifications";
+import { login, register } from "../services/auth";
+import { isStatusOk } from "../utils/httpUtils";
 
 type RegisterFormValues = {
   userName: string;
@@ -16,6 +19,7 @@ type RegisterFormValues = {
 };
 
 const RegisterScreen = () => {
+  const { add } = useNotifications();
   const methods = useForm<RegisterFormValues>({
     defaultValues: {
       userName: "",
@@ -26,7 +30,27 @@ const RegisterScreen = () => {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: RegisterFormValues) => {};
+  const onSubmit = async (data: RegisterFormValues) => {
+    const values = methods.getValues();
+    const registerDto: RegisterDto = {
+      email: values.email,
+      password: values.password,
+      username: values.userName,
+    };
+    const res = await register(registerDto);
+    if (res instanceof AxiosError) {
+      add({
+        title: "Network Error",
+        body: "There has been an issue while trying to reach to our servers. Please try again.",
+      });
+      return;
+    }
+
+    add({
+      title: "Registration Successful",
+      body: "You've successfully registered.",
+    });
+  };
 
   const onError = (errors: any, e: any) => {
     if (methods.formState.isValid) {

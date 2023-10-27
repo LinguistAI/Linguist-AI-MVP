@@ -21,8 +21,6 @@ const PrimaryTextInput = (props: PrimaryTextInputProps) => {
   const { name } = props;
   const formContext = useFormContext();
 
-  console.log(formContext.formState.errors);
-
   if (!formContext || !name) {
     const msg = !formContext
       ? "TextInput must be wrapped by the FormProvider"
