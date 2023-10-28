@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import ActionIcon from "../components/ActionIcon";
+import ChatMessage from "../components/ChatMessage";
 import MultilineTextInput from "../components/input/MultilineTextInput";
 import Colors from "../theme/colors";
 
@@ -14,6 +15,7 @@ const ChatScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <ChatMessage isSent={false} message="heheheeey" />
       <View style={styles.outerContainer}>
         <View style={styles.innerBorder}>
           <View style={styles.innerContainer}>
