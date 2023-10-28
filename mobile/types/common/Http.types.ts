@@ -1,8 +1,6 @@
 export interface APIResponse<T> {
-  data: {
-    msg: string;
-    status: number;
-    timestamp: Date;
-    data?: T;
-  };
+  data?: T;
+  msg: string;
+  status: number;
+  timestamp: Date;
 }

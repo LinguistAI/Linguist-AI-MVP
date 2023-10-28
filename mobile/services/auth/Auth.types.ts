@@ -14,3 +14,11 @@ interface RRegister {
   email: string;
   id: string;
 }
+
+interface RLogin {
+  username: string;
+  email: string;
+  id: string;
+  accessToken: string;
+  refreshToken: string;
+}

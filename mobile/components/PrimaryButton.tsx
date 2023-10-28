@@ -1,18 +1,27 @@
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Colors from "../theme/colors";
 
 interface PrimaryButtonProps {
   children: React.ReactNode;
+  loading?: boolean;
   onPress?: () => void;
 }
 
 const PrimaryButton = (props: PrimaryButtonProps) => {
-  const { children, onPress } = props;
+  const { children, onPress, loading } = props;
 
   return (
     <View style={styles.outerContainer}>
       <Pressable
         onPress={onPress}
+        disabled={loading}
         android_ripple={{ color: Colors.primary[600] }}
         style={({ pressed }) => {
           if (Platform.OS === "ios") {
@@ -21,7 +30,11 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
           return styles.innerContainer;
         }}
       >
-        <Text style={styles.buttonText}>{children}</Text>
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text style={styles.buttonText}>{children}</Text>
+        )}
       </Pressable>
     </View>
   );
