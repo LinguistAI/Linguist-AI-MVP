@@ -8,6 +8,7 @@ interface ChatMessageProps {
 
 const ChatMessage = (props: ChatMessageProps) => {
   const { message, isSent } = props;
+  // TODO: Add message time to the chat message
 
   return (
     <View style={[styles.container, isSent ? styles.sent : styles.received]}>
@@ -19,7 +20,7 @@ const ChatMessage = (props: ChatMessageProps) => {
 const styles = StyleSheet.create({
   container: {
     maxWidth: "80%",
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 8,
     marginVertical: 4,
   },
