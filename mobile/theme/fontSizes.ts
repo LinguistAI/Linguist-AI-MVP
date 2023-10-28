@@ -1,4 +1,4 @@
-const FontSizes = {
+const TitleSizes = {
   h1: 48,
   h2: 36,
   h3: 24,
@@ -6,4 +6,4 @@ const FontSizes = {
   h5: 16,
 };
 
-export default FontSizes;
+export default TitleSizes;

@@ -1,14 +1,15 @@
-import { StyleSheet, View, Text } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
-import PrimaryTextInput from "../components/input/PrimaryTextInput";
 import {
-  useForm,
   FormProvider,
-  SubmitHandler,
   SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
 } from "react-hook-form";
-import PasswordTextInput from "../components/input/PasswordTextInput";
+import { StyleSheet, Text, View } from "react-native";
+import PrimaryButton from "../components/PrimaryButton";
 import EmailTextInput from "../components/input/EmailTextInput";
+import PasswordTextInput from "../components/input/PasswordTextInput";
+import PrimaryTextInput from "../components/input/PrimaryTextInput";
+import useNotifications from "../hooks/useNotifications";
 import Colors from "../theme/colors";
 
 type FormValues = {
@@ -21,6 +22,7 @@ interface LoginScreenProps {
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
+  const { add } = useNotifications();
   const methods = useForm({
     defaultValues: {
       email: "",
@@ -37,9 +39,7 @@ const LoginScreen = (props: LoginScreenProps) => {
     props.navigation.navigate("Main");
   };
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
-    return console.log(errors);
-  };
+  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {};
 
   return (
     <View style={styles.container}>
@@ -51,7 +51,7 @@ const LoginScreen = (props: LoginScreenProps) => {
             Forgot Password?
           </Text>
           <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
-            Login
+            LOG IN
           </PrimaryButton>
         </View>
       </FormProvider>
@@ -60,19 +60,20 @@ const LoginScreen = (props: LoginScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginVertical: 10,
+    padding: 20,
+  },
   forgotPassword: {
     color: Colors.primary[300],
     textAlign: "center",
     textDecorationLine: "underline",
-  },
-  container: {
-    flex: 1,
-    marginVertical: 32,
-    padding: 20,
+    fontSize: 16,
   },
   mainSection: {
     flex: 5,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     gap: 15,
   },
 });
