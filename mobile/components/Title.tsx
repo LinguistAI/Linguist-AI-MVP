@@ -1,7 +1,7 @@
 import { StyleSheet, Text } from "react-native";
-import FontSizes from "../theme/fontSizes";
+import TitleSizes from "../theme/fontSizes";
 
-type FontSizeKeys = keyof typeof FontSizes;
+type FontSizeKeys = keyof typeof TitleSizes;
 
 interface TitleProps {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ interface TitleProps {
 
 const Title = ({ children, fontSize = "h1" }: TitleProps) => {
   return (
-    <Text style={[styles.titleText, { fontSize: FontSizes[fontSize] }]}>
+    <Text style={[styles.titleText, { fontSize: TitleSizes[fontSize] }]}>
       {children}
     </Text>
   );
