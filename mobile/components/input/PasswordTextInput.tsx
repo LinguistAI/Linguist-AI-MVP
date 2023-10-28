@@ -14,7 +14,7 @@ const PasswordTextInput = (props: PasswordTextInputProps) => {
         props.rules
           ? props.rules
           : {
-              required: "Password is required!",
+              required: "Password field cannot be left empty!",
             }
       }
       defaultValue={props.defaultValue ? props.defaultValue : ""}

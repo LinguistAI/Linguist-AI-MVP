@@ -13,10 +13,10 @@ const EmailTextInput = (props: EmailTextInputProps) => {
         props.rules
           ? props.rules
           : {
-              required: "Email is required!",
+              required: "Email field cannot be left empty!",
               pattern: {
                 value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
-                message: "Must be formatted: name@email.com",
+                message: "Must be formatted as: name@email.com",
               },
             }
       }
