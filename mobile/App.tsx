@@ -8,28 +8,34 @@ import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import LandingScreen from "./screens/LandingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import { CustomErrorBoundary } from "./screens/errors/ErrorBoundary";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen
-          name="Landing"
-          component={LandingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen
-          name="Main"
-          component={BottomNavigation}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
-      </Stack.Navigator>
-      <Notifications />
-    </NavigationContainer>
+    <CustomErrorBoundary>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Landing">
+          <Stack.Screen
+            name="Landing"
+            component={LandingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Main"
+            component={BottomNavigation}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen
+            name="Forgot Password"
+            component={ForgotPasswordScreen}
+          />
+        </Stack.Navigator>
+        <Notifications />
+      </NavigationContainer>
+    </CustomErrorBoundary>
   );
 }
