@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import app.linguistai.bmvp.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 // @Qualifier("accountjpa")
 @Repository
@@ -22,6 +23,7 @@ public interface IAccountRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
 
     @Modifying
+    @Transactional
     @Query("update User u set u.password = :password where u.id = :id")
     int updatePassword(@Param("password") String newPassword, @Param("id") UUID id);
 }

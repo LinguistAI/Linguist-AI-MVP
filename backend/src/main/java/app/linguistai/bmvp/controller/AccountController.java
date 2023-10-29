@@ -1,6 +1,11 @@
 package app.linguistai.bmvp.controller;
 
 import java.util.List;
+
+import app.linguistai.bmvp.model.ResetToken;
+import app.linguistai.bmvp.request.QResetPassword;
+import app.linguistai.bmvp.request.QResetPasswordVerification;
+import app.linguistai.bmvp.request.QResetPasswordSave;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +27,7 @@ import app.linguistai.bmvp.response.RLoginUser;
 import app.linguistai.bmvp.response.RRefreshToken;
 import app.linguistai.bmvp.response.Response;
 import app.linguistai.bmvp.service.AccountService;
+import app.linguistai.bmvp.service.EmailService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -30,6 +36,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("api/v1/auth")
 public class AccountController {
     private final AccountService accountService;
+    private final EmailService emailService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "login")
@@ -98,4 +105,44 @@ public class AccountController {
             return Response.create(ExceptionLogger.log(e), HttpStatus.OK);  
         }        
     }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/request-reset")
+    public ResponseEntity<Object> requestResetPassword(@Valid @RequestBody QResetPassword resetPasswordInfo) {
+        try {
+            String email = resetPasswordInfo.getEmail();
+            ResetToken resetToken = accountService.generateEmailToken(email);
+            emailService.sendPasswordResetEmail(email, resetToken);
+            return Response.create("Password reset email is sent", HttpStatus.OK);
+        } catch (Exception e){
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/validate-reset")
+    public ResponseEntity<Object> validateResetPassword(@Valid @RequestBody QResetPasswordVerification verificationInfo) {
+        try {
+            boolean tokenValid = accountService.validateResetCode(verificationInfo.getEmail(), verificationInfo.getResetCode());
+            if (tokenValid) {
+                return Response.create("Valid password reset token", HttpStatus.OK);
+            } else {
+                return Response.create("Invalid password reset token", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e){
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/reset-password")
+    public ResponseEntity<Object> saveResetPassword(@Valid @RequestBody QResetPasswordSave passwordInfo) {
+        try {
+            accountService.setPassword(passwordInfo.getEmail(), passwordInfo.getNewPassword());
+            return Response.create("Password is changed", HttpStatus.OK);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
