@@ -61,7 +61,7 @@ public class AccountController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/change_password")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/change-password")
     public ResponseEntity<Object> changePassword(@Valid @RequestBody QChangePassword userInfo,
         @RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
 
