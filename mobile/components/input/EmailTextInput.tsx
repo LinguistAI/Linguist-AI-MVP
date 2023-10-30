@@ -21,6 +21,7 @@ const EmailTextInput = (props: EmailTextInputProps) => {
             }
       }
       defaultValue={props.defaultValue ? props.defaultValue : ""}
+      {...props}
     />
   );
 };

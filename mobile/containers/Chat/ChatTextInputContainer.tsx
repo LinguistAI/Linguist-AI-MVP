@@ -18,7 +18,7 @@ const ChatTextInputContainer = () => {
           <MultilineTextInput
             onChangeText={(text) => setText(text)}
             value={text}
-            maxHeight={40}
+            maxHeight={60}
           />
         </View>
         <View style={{ flex: 1 }}>
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.gray[600],
     borderRadius: 48,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 4,
   },
 });
 

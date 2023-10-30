@@ -15,6 +15,7 @@ export interface PrimaryTextInputProps extends TextInputProps {
   label: string;
   rules: Object;
   defaultValue: string;
+  rightIcon?: React.ReactNode;
 }
 
 const PrimaryTextInput = (props: PrimaryTextInputProps) => {
@@ -49,14 +50,16 @@ const ControlledInput = (props: PrimaryTextInputProps) => {
   return (
     <View>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
-      <View>
-        <TextInput
-          style={[styles.input]}
-          onChangeText={field.onChange}
-          onBlur={field.onBlur}
-          value={field.value}
-          {...props}
-        />
+      <View style={styles.inputRoot}>
+        <View style={[styles.inputContainer]}>
+          <TextInput
+            onChangeText={field.onChange}
+            onBlur={field.onBlur}
+            value={field.value}
+            {...props}
+          />
+          {props.rightIcon}
+        </View>
       </View>
       <ErrorMessage
         name={props.name}
@@ -75,7 +78,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 6,
   },
-  input: {
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#f3f3f3",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  inputRoot: {
+    flex: 1,
     height: 60,
     borderWidth: 1,
     padding: 10,
