@@ -2,7 +2,6 @@ package app.linguistai.bmvp.model;
 
 import java.util.UUID;
 import java.sql.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -19,23 +18,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_streak")
 @NoArgsConstructor
 public class UserStreak {
-	@Id
-	@Column(name = "user_id", nullable = false)
-	private UUID userId;
+    @Id
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
-	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey())
-	private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey())
+    private User user;
 
-	@NotNull
-	@Column(name = "current_streak", nullable = false)
-	private Integer currentStreak;
+    @NotNull
+    @Column(name = "current_streak", nullable = false)
+    private Integer currentStreak;
 
-	@NotNull
-	@Column(name = "highest_streak", nullable = false)
-	private Integer highestStreak;
+    @NotNull
+    @Column(name = "highest_streak", nullable = false)
+    private Integer highestStreak;
 
-	@NotNull
-	@Column(name = "last_login", nullable = false)
-	private Date lastLogin;
+    @NotNull
+    @Column(name = "last_login", nullable = false)
+    private Date lastLogin;
 }

@@ -12,14 +12,14 @@ import io.swagger.v3.oas.models.info.Info;
 @OpenAPIDefinition
 @Configuration
 @SecurityScheme(
-		name = "token",
-		type = SecuritySchemeType.HTTP,
-		bearerFormat = "JWT",
-		scheme = "bearer"
+        name = "token",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
 )
 public class SpringdocConfig {
-	@Bean
-	public OpenAPI baseOpenAPI() {
-		return new OpenAPI().info(new Info().title("Spring Doc").version("1.0.0.").description("Spring doc description"));
-	}
+    @Bean
+    public OpenAPI baseOpenAPI() {
+        return new OpenAPI().info(new Info().title("Spring Doc").version("1.0.0.").description("Spring doc description"));
+    }
 }

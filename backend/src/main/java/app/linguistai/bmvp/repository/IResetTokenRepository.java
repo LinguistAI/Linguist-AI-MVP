@@ -12,6 +12,5 @@ import java.util.UUID;
 @Repository
 public interface IResetTokenRepository extends JpaRepository<ResetToken, UUID> {
 	List<ResetToken> findAllByUser(User user);
-
 	Optional<ResetToken> findByUserAndResetCode(User user, String resetCode);
 }

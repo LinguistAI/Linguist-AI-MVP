@@ -27,204 +27,204 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class AccountService {
-	public static int hashStrength = 10;
+    public static int hashStrength = 10;
 
-	@Autowired
-	final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	// @Autowired
-	private final IAccountRepository accountRepository;
-	private final IResetTokenRepository resetTokenRepository;
-	private final JWTUserService jwtUserService;
+    // @Autowired
+    private final IAccountRepository accountRepository;
+    private final IResetTokenRepository resetTokenRepository;
+    private final JWTUserService jwtUserService;
 
-	@Autowired
-	private final JWTUtils jwtUtils;
+    @Autowired
+    private final JWTUtils jwtUtils;
 
-	private final UserStreakService userStreakService;
+    private final UserStreakService userStreakService;
 
-	public RLoginUser login(QUserLogin user) throws Exception {
-		try {
-			User dbUser = accountRepository.findUserByEmail(user.getEmail()).orElse(null);
+    public RLoginUser login(QUserLogin user) throws Exception {
+        try {
+            User dbUser = accountRepository.findUserByEmail(user.getEmail()).orElse(null);
 
-			if (dbUser == null) {
-				throw new Exception("User is not found");
-			}
+            if (dbUser == null) {
+                throw new Exception("User is not found");
+            }
+            
+            String hashedPassword = dbUser.getPassword();
+            boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword);
 
-			String hashedPassword = dbUser.getPassword();
-			boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword);
+            if (!passwordMatch) {
+                throw new Exception("Passwords do not match");
+            }
 
-			if (!passwordMatch) {
-				throw new Exception("Passwords do not match");
-			}
+            System.out.println("Passwords are matched");
 
-			System.out.println("Passwords are matched");
+            final UserDetails userDetails = jwtUserService.loadUserByUsername(user.getEmail());
+            final String accessToken = jwtUtils.createAccessToken(userDetails);
+            final String refreshToken = jwtUtils.createRefreshToken(userDetails);
+            
+            // If login is successful, check whether to increase user streak or not
+            userStreakService.updateUserStreak(dbUser.getEmail());
 
-			final UserDetails userDetails = jwtUserService.loadUserByUsername(user.getEmail());
-			final String accessToken = jwtUtils.createAccessToken(userDetails);
-			final String refreshToken = jwtUtils.createRefreshToken(userDetails);
+            return new RLoginUser(dbUser, accessToken, refreshToken);
+        } catch (Exception e) {
+            System.out.println("login exception");
+            throw e;
+        }
+    }
 
-			// If login is successful, check whether to increase user streak or not
-			userStreakService.updateUserStreak(dbUser.getEmail());
+    public RRefreshToken refreshToken(String auth) throws Exception {
+        try {
+            String username = jwtUtils.extractRefreshUsername(JWTFilter.getTokenWithoutBearer(auth));
 
-			return new RLoginUser(dbUser, accessToken, refreshToken);
-		} catch (Exception e) {
-			System.out.println("login exception");
-			throw e;
-		}
-	}
+            final UserDetails userDetails = jwtUserService.loadUserByUsername(username);
+            final String accessToken = jwtUtils.createAccessToken(userDetails);
+            return new RRefreshToken(accessToken);
+            
+        } catch (Exception e) {
+            System.out.println("refresh token exception");
+            throw e;
+        }
+    }
 
-	public RRefreshToken refreshToken(String auth) throws Exception {
-		try {
-			String username = jwtUtils.extractRefreshUsername(JWTFilter.getTokenWithoutBearer(auth));
+    public boolean changePassword(String auth, QChangePassword passwords) throws Exception {
+        try {
+            String email = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(auth));
+            User dbUser = accountRepository.findUserByEmail(email).orElse(null);
 
-			final UserDetails userDetails = jwtUserService.loadUserByUsername(username);
-			final String accessToken = jwtUtils.createAccessToken(userDetails);
-			return new RRefreshToken(accessToken);
+            if (dbUser == null) {
+                throw new Exception("User is not found");
+            }
+            
+            String hashedPassword = dbUser.getPassword();
+            
+            boolean passwordMatch = bCryptPasswordEncoder.matches(passwords.getOldPassword(), hashedPassword);
 
-		} catch (Exception e) {
-			System.out.println("refresh token exception");
-			throw e;
-		}
-	}
+            if (!passwordMatch) {
+                System.out.println("passwords does not match");
+                throw new Exception("pasword no match");
+            }
 
-	public boolean changePassword(String auth, QChangePassword passwords) throws Exception {
-		try {
-			String email = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(auth));
-			User dbUser = accountRepository.findUserByEmail(email).orElse(null);
+            System.out.println("passwords are matched");
+            // hash new password
+            String hashedNewPassword = bCryptPasswordEncoder.encode(passwords.getNewPassword());
+            
+            dbUser.setPassword(hashedNewPassword);
+            int result = accountRepository.updatePassword(hashedNewPassword, dbUser.getId());
+            System.out.println("result: " + result);
+           
+            return true;            
+        } catch (Exception e) {
+            System.out.println("password change exception exception");
+            throw e;
+        }
+    }
 
-			if (dbUser == null) {
-				throw new Exception("User is not found");
-			}
+    public User addUser(User user) throws Exception {
+        try {
+            System.out.println("user that will be saved: " + user);
+            boolean userExist = accountRepository.existsByEmail(user.getEmail());
+            
+            if (userExist) {
+                throw new Exception("User already exists");
+            } else {
+                // generate uuid and hash password if user does not exist in the system
+                user.setId(UUID.randomUUID());
+                user.setPassword(encodePassword(user.getPassword()));
 
-			String hashedPassword = dbUser.getPassword();
+                System.out.println("user_id: " + user.getId());
+                User newUser = accountRepository.save(user);
 
-			boolean passwordMatch = bCryptPasswordEncoder.matches(passwords.getOldPassword(), hashedPassword);
+                // Create UserStreak for the new user
+                if (!userStreakService.createUserStreak(newUser)) {
+                    throw new Exception("ERROR: Could not generate UserStreak for user with ID: [" + newUser.getId() + "]. Perhaps UserStreak already exists?");
+                }
 
-			if (!passwordMatch) {
-				System.out.println("passwords does not match");
-				throw new Exception("pasword no match");
-			}
+                System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
+                return newUser;
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
-			System.out.println("passwords are matched");
-			// hash new password
-			String hashedNewPassword = bCryptPasswordEncoder.encode(passwords.getNewPassword());
+    public List<User> getUsers() {
+        try {
+            return accountRepository.findAll();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
-			dbUser.setPassword(hashedNewPassword);
-			int result = accountRepository.updatePassword(hashedNewPassword, dbUser.getId());
-			System.out.println("result: " + result);
+    private String encodePassword(String plainPassword) {
+        try {
+            return bCryptPasswordEncoder.encode(plainPassword);
+        } catch (Exception e) {
+            throw e;
+        }       
+    }
 
-			return true;
-		} catch (Exception e) {
-			System.out.println("password change exception exception");
-			throw e;
-		}
-	}
+    public ResetToken generateEmailToken(String email) throws Exception {
+        try {
+            User user = accountRepository.findUserByEmail(email).orElse(null);
+            if (user == null) {
+                throw new NotFoundException("User with email [" + email + "] not found");
+            }
+            // invalidate previous reset tokens of user
+            List<ResetToken> resetTokens = resetTokenRepository.findAllByUser(user);
+            for (ResetToken resetToken: resetTokens) {
+                resetToken.setUsed(true);
+            }
+            // create a new reset token
+            ResetToken resetToken = new ResetToken(user);
+            return resetTokenRepository.save(resetToken);
+        } catch (Exception e) {
+            System.out.println("Email token generation exception for email");
+            throw e;
+        }
+    }
 
-	public User addUser(User user) throws Exception {
-		try {
-			System.out.println("user that will be saved: " + user);
-			boolean userExist = accountRepository.existsByEmail(user.getEmail());
+    public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception{
+        try {
+            User user = accountRepository.findUserByEmail(email).orElse(null);
+            if (user == null) {
+                throw new NotFoundException("User with email [" + email + "] not found");
+            }
 
-			if (userExist) {
-				throw new Exception("User already exists");
-			} else {
-				// generate uuid and hash password if user does not exist in the system
-				user.setId(UUID.randomUUID());
-				user.setPassword(encodePassword(user.getPassword()));
+            ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
+            if(resetToken == null){
+                throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
+            }
 
-				System.out.println("user_id: " + user.getId());
-				User newUser = accountRepository.save(user);
+            if (!isResetTokenValid(resetToken)) {
+                return false;
+            }
 
-				// Create UserStreak for the new user
-				if (!userStreakService.createUserStreak(newUser)) {
-					throw new Exception("ERROR: Could not generate UserStreak for user with ID: [" + newUser.getId() + "]. Perhaps UserStreak already exists?");
-				}
+            if (invalidate){
+                resetToken.setUsed(true);
+                resetTokenRepository.save(resetToken);
+            }
+            return true;
 
-				System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
-				return newUser;
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-	}
+        } catch (Exception e){
+            System.out.println("Password reset token validation exception");
+            throw e;
+        }
+    }
 
-	public List<User> getUsers() {
-		try {
-			return accountRepository.findAll();
-		} catch (Exception e) {
-			throw e;
-		}
-	}
+    private boolean isResetTokenValid(ResetToken resetToken){
+        return resetToken.getValidUntil() != null && !resetToken.getValidUntil().before(new Date()) && !resetToken.isUsed();
+    }
 
-	private String encodePassword(String plainPassword) {
-		try {
-			return bCryptPasswordEncoder.encode(plainPassword);
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-
-	public ResetToken generateEmailToken(String email) throws Exception {
-		try {
-			User user = accountRepository.findUserByEmail(email).orElse(null);
-			if (user == null) {
-				throw new NotFoundException("User with email [" + email + "] not found");
-			}
-			// invalidate previous reset tokens of user
-			List<ResetToken> resetTokens = resetTokenRepository.findAllByUser(user);
-			for (ResetToken resetToken : resetTokens) {
-				resetToken.setUsed(true);
-			}
-			// create a new reset token
-			ResetToken resetToken = new ResetToken(user);
-			return resetTokenRepository.save(resetToken);
-		} catch (Exception e) {
-			System.out.println("Email token generation exception for email");
-			throw e;
-		}
-	}
-
-	public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception {
-		try {
-			User user = accountRepository.findUserByEmail(email).orElse(null);
-			if (user == null) {
-				throw new NotFoundException("User with email [" + email + "] not found");
-			}
-
-			ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
-			if (resetToken == null) {
-				throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
-			}
-
-			if (!isResetTokenValid(resetToken)) {
-				return false;
-			}
-
-			if (invalidate) {
-				resetToken.setUsed(true);
-				resetTokenRepository.save(resetToken);
-			}
-			return true;
-
-		} catch (Exception e) {
-			System.out.println("Password reset token validation exception");
-			throw e;
-		}
-	}
-
-	private boolean isResetTokenValid(ResetToken resetToken) {
-		return resetToken.getValidUntil() != null && !resetToken.getValidUntil().before(new Date()) && !resetToken.isUsed();
-	}
-
-	public boolean setPassword(String email, String password) throws Exception {
-		User user = accountRepository.findUserByEmail(email).orElse(null);
-		if (user == null) {
-			throw new NotFoundException("User with email [" + email + "] not found");
-		}
-		String hashedPassword = encodePassword(password);
-		user.setPassword(hashedPassword);
-		int rowsAffected = accountRepository.updatePassword(hashedPassword, user.getId());
-		return rowsAffected > 0;
-	}
+    public boolean setPassword(String email, String password) throws Exception{
+        User user = accountRepository.findUserByEmail(email).orElse(null);
+        if (user == null) {
+            throw new NotFoundException("User with email [" + email + "] not found");
+        }
+        String hashedPassword = encodePassword(password);
+        user.setPassword(hashedPassword);
+        int rowsAffected = accountRepository.updatePassword(hashedPassword, user.getId());
+        return rowsAffected > 0;
+    }
 
 }

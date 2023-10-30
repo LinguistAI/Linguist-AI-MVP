@@ -7,17 +7,17 @@ import lombok.Data;
 
 @Data
 public class QUserLogin {
-	@NotNull
-	private String email;
+    @NotNull
+    private String email;
 
-	@NotEmpty
-	private String password;
+    @NotEmpty
+    private String password;
 
-	public QUserLogin(
-			@JsonProperty("email") String email,
-			@JsonProperty("password") String password) {
+    public QUserLogin(
+                @JsonProperty("email") String email,
+                @JsonProperty("password") String password) {
 
-		this.email = email;
-		this.password = password;
-	}
+        this.email = email;
+        this.password = password;
+    }
 }
