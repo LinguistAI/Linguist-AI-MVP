@@ -32,9 +32,9 @@ public class SecurityConfig {
 			"/api/v1/auth/login",
 			"/api/v1/auth/register",
 			"/api/v1/auth/request-reset",
+			"/api/v1/auth/test-reset",
 			"/api/v1/auth/validate-reset",
 			"/api/v1/auth/reset-password"
-
 	};
 
 	@Bean

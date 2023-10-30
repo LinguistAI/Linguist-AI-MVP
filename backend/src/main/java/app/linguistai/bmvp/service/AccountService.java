@@ -170,6 +170,12 @@ public class AccountService {
             if (user == null) {
                 throw new NotFoundException("User with email [" + email + "] not found");
             }
+            // invalidate previous reset tokens of user
+            List<ResetToken> resetTokens = resetTokenRepository.findAllByUser(user);
+            for (ResetToken resetToken: resetTokens) {
+                resetToken.setUsed(true);
+            }
+            // create a new reset token
             ResetToken resetToken = new ResetToken(user);
             return resetTokenRepository.save(resetToken);
         } catch (Exception e) {
@@ -178,7 +184,7 @@ public class AccountService {
         }
     }
 
-    public boolean validateResetCode(String email, String resetCode) throws Exception{
+    public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception{
         try {
             User user = accountRepository.findUserByEmail(email).orElse(null);
             if (user == null) {
@@ -187,15 +193,17 @@ public class AccountService {
 
             ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
             if(resetToken == null){
-                throw new NotFoundException("Reset token for user with id [" + user.getId() + "] with code [" + resetCode + "] not found.");
+                throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
             }
 
             if (!isResetTokenValid(resetToken)) {
                 return false;
             }
 
-            resetToken.setUsed(true);
-            resetTokenRepository.save(resetToken);
+            if (invalidate){
+                resetToken.setUsed(true);
+                resetTokenRepository.save(resetToken);
+            }
             return true;
 
         } catch (Exception e){

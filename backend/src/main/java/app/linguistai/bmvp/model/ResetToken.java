@@ -14,8 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.sql.Date;
-import java.util.Calendar;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -41,14 +41,14 @@ public class ResetToken {
 	private boolean isUsed;
 
 	@Column(name = "valid_until", nullable = false)
-	private Date validUntil;
+	private Timestamp validUntil;
 
 	public ResetToken(User user) {
 		this.user = user;
 		this.resetCode = RandomStringUtils.randomAlphanumeric(6);
 		this.isUsed = false;
-		this.validUntil = DateUtils.convertUtilDateToSqlDate(DateUtils.addTime
-				(Calendar.getInstance().getTime(), 0, 0, RESET_TOKEN_TIME_LIMIT_MINUTES));
+		this.validUntil = new Timestamp((DateUtils.addTime
+				(new java.util.Date(), 0, 0, RESET_TOKEN_TIME_LIMIT_MINUTES)).getTime());
 	}
 
 	public int getTimeLimitInMinutes(){
