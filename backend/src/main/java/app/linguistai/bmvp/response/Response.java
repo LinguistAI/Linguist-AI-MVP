@@ -9,37 +9,37 @@ import org.springframework.http.ResponseEntity;
 
 public class Response {
 
-    public static ResponseEntity<Object> create(String message, HttpStatus status, Object data) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
+	public static ResponseEntity<Object> create(String message, HttpStatus status, Object data) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
-        response.put("timestamp", timestamp);
-        response.put("msg", message);
-        response.put("status", status.value());
-        response.put("data", data);
+		response.put("timestamp", timestamp);
+		response.put("msg", message);
+		response.put("status", status.value());
+		response.put("data", data);
 
-        return new ResponseEntity<Object>(response, status);
-    }
+		return new ResponseEntity<Object>(response, status);
+	}
 
-    public static ResponseEntity<Object> create(String message, HttpStatus status) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
+	public static ResponseEntity<Object> create(String message, HttpStatus status) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
-        response.put("timestamp", timestamp);
-        response.put("msg", message);
-        response.put("status", status.value());
+		response.put("timestamp", timestamp);
+		response.put("msg", message);
+		response.put("status", status.value());
 
-        return new ResponseEntity<Object>(response, status);
-    }
+		return new ResponseEntity<Object>(response, status);
+	}
 
-    public static ResponseEntity<Object> create(String message, int status) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
+	public static ResponseEntity<Object> create(String message, int status) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
-        response.put("timestamp", timestamp);
-        response.put("msg", message);
-        response.put("status", status);
+		response.put("timestamp", timestamp);
+		response.put("msg", message);
+		response.put("status", status);
 
-        return new ResponseEntity<Object>(response, HttpStatusCode.valueOf(status));
-    }
+		return new ResponseEntity<Object>(response, HttpStatusCode.valueOf(status));
+	}
 }

@@ -1,6 +1,7 @@
 package app.linguistai.bmvp.model;
 
 import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,20 +16,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 @NoArgsConstructor
 public class User {
-    @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+	@Id
+	@Column(name = "id", nullable = false)
+	private UUID id;
 
-    @NotBlank
-    @Column(name = "username", nullable = false)
-    private String username;
+	@NotBlank
+	@Column(name = "username", nullable = false)
+	private String username;
 
-    @NotBlank
-    @Column(name = "email", nullable = false, unique = true)
-    @Email(message = "Email field must be in a valid email format")
-    private String email;
+	@NotBlank
+	@Column(name = "email", nullable = false, unique = true)
+	@Email(message = "Email field must be in a valid email format")
+	private String email;
 
-    @NotBlank
-    @Column(name = "password", nullable = false)
-    private String password;
+	@NotBlank
+	@Column(name = "password", nullable = false)
+	private String password;
 }

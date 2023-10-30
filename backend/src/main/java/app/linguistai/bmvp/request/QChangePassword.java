@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class QChangePassword {
-    private String oldPassword;
-    private String newPassword;
+	private String oldPassword;
+	private String newPassword;
 }

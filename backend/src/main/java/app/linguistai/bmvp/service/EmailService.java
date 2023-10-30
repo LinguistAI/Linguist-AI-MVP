@@ -41,7 +41,7 @@ public class EmailService {
 			helper.setText(htmlText, true);
 
 			mailSender.send(message);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send email.");
 			throw e;
 		}
@@ -64,7 +64,7 @@ public class EmailService {
 			helper.getMimeMultipart().getBodyPart("<" + image.getName() + ">").setFileName(attachmentName);
 
 			mailSender.send(message);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send email with inline image.");
 			throw e;
 		}
@@ -85,13 +85,13 @@ public class EmailService {
 			String htmlText = templateEngine.process("forgot-password", context);
 			String subject = "Password reset request";
 			sendEmail(recipientEmail, subject, htmlText, image, LOGO_ATTACHMENT_FILE_NAME);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send password reset email.");
 			throw e;
 		}
 	}
 
-	private MultipartFile convertImage(String imagePath) throws Exception{
+	private MultipartFile convertImage(String imagePath) throws Exception {
 		try {
 			Resource resource = new ClassPathResource(imagePath);
 			byte[] imageBytes = resource.getInputStream().readAllBytes();
@@ -99,8 +99,7 @@ public class EmailService {
 			String extension;
 			if (parts.length > 1) {
 				extension = parts[parts.length - 1].toLowerCase();
-			}
-			else{
+			} else {
 				throw new Exception("ERROR: Could not determine the image extension.");
 			}
 			return new MockMultipartFile(

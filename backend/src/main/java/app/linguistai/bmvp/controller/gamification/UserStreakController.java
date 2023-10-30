@@ -18,30 +18,27 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("api/v1/user-streak")
 public class UserStreakController {
-    private final UserStreakService userStreakService;
+	private final UserStreakService userStreakService;
 
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "/all")
-    public ResponseEntity<Object> getAllUserStreaks() {
-        try {
-            return Response.create("Successfully fetched all UserStreaks", HttpStatus.OK, userStreakService.getAllUserStreaks());
-        }
-        catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
-    }
+	@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+	@GetMapping(path = "/all")
+	public ResponseEntity<Object> getAllUserStreaks() {
+		try {
+			return Response.create("Successfully fetched all UserStreaks", HttpStatus.OK, userStreakService.getAllUserStreaks());
+		} catch (Exception e) {
+			return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping
-    public ResponseEntity<Object> getUserStreakByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
-        try {
-            return Response.create("Successfully fetched UserStreak", HttpStatus.OK, userStreakService.getUserStreak(auth));
-        }
-        catch (NotFoundException e1) {
-            return Response.create("UserStreak does not exist for user email", HttpStatus.INTERNAL_SERVER_ERROR);
-        }      
-        catch (Exception e2) {
-            return Response.create(ExceptionLogger.log(e2), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
-    }
+	@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+	@GetMapping
+	public ResponseEntity<Object> getUserStreakByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
+		try {
+			return Response.create("Successfully fetched UserStreak", HttpStatus.OK, userStreakService.getUserStreak(auth));
+		} catch (NotFoundException e1) {
+			return Response.create("UserStreak does not exist for user email", HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (Exception e2) {
+			return Response.create(ExceptionLogger.log(e2), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

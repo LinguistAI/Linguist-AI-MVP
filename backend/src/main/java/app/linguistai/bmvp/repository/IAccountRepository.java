@@ -17,13 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 // @Transactional
 public interface IAccountRepository extends JpaRepository<User, UUID> {
-    List<User> findAllById(UUID id);
-    Optional<User> findUserById(UUID id);
-    Optional<User> findUserByEmail(String email);
-    boolean existsByEmail(String email);
+	List<User> findAllById(UUID id);
 
-    @Modifying
-    @Transactional
-    @Query("update User u set u.password = :password where u.id = :id")
-    int updatePassword(@Param("password") String newPassword, @Param("id") UUID id);
+	Optional<User> findUserById(UUID id);
+
+	Optional<User> findUserByEmail(String email);
+
+	boolean existsByEmail(String email);
+
+	@Modifying
+	@Transactional
+	@Query("update User u set u.password = :password where u.id = :id")
+	int updatePassword(@Param("password") String newPassword, @Param("id") UUID id);
 }
