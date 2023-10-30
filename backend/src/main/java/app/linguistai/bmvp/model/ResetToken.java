@@ -22,8 +22,8 @@ import java.util.Calendar;
 @Table(name = "reset_token")
 @NoArgsConstructor
 public class ResetToken {
-	private final int RESET_TOKEN_LENGTH = 6;
-	private final int RESET_TOKEN_TIME_LIMIT_HOURS = 24;
+	private static final int RESET_TOKEN_LENGTH = 6;
+	private static final int RESET_TOKEN_TIME_LIMIT_MINUTES = 15;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +47,11 @@ public class ResetToken {
 		this.user = user;
 		this.resetCode = RandomStringUtils.randomAlphanumeric(6);
 		this.isUsed = false;
-		this.validUntil = DateUtils.convertUtilDateToSqlDate(DateUtils.addHours(Calendar.getInstance().getTime(), RESET_TOKEN_TIME_LIMIT_HOURS));
+		this.validUntil = DateUtils.convertUtilDateToSqlDate(DateUtils.addTime
+				(Calendar.getInstance().getTime(), 0, 0, RESET_TOKEN_TIME_LIMIT_MINUTES));
+	}
+
+	public int getTimeLimitInMinutes(){
+		return RESET_TOKEN_TIME_LIMIT_MINUTES;
 	}
 }

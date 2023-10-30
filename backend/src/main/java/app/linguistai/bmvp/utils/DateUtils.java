@@ -11,10 +11,20 @@ public class DateUtils {
         return sqlDate != null ? new java.util.Date(sqlDate.getTime()) : null;
     }
 
-    public static java.util.Date addHours(java.util.Date date, int hours) {
+    public static java.util.Date addTime(java.util.Date date, int days, int hours, int minutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR, hours);
+
+        if (days != 0) {
+            calendar.add(Calendar.DAY_OF_MONTH, days);
+        }
+        if (hours != 0) {
+            calendar.add(Calendar.HOUR_OF_DAY, hours);
+        }
+        if (minutes != 0) {
+            calendar.add(Calendar.MINUTE, minutes);
+        }
+
         return calendar.getTime();
     }
 }

@@ -76,7 +76,7 @@ public class EmailService {
 			Context context = new Context();
 			context.setVariable("name", resetToken.getUser().getUsername());
 			context.setVariable("resetCode", resetToken.getResetCode());
-			context.setVariable("timeLimitHours", resetToken.getRESET_TOKEN_TIME_LIMIT_HOURS());
+			context.setVariable("timeLimitMinutes", resetToken.getTimeLimitInMinutes());
 			context.setVariable("sign", "The LinguistAI Team");
 
 			MultipartFile image = convertImage(LOGO_PATH);
