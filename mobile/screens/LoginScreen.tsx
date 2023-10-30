@@ -4,7 +4,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import EmailTextInput from "../components/input/EmailTextInput";
 import PasswordTextInput from "../components/input/PasswordTextInput";
@@ -42,9 +42,9 @@ const LoginScreen = (props: LoginScreenProps) => {
   const onError: SubmitErrorHandler<FormValues> = (errors, e) => {};
 
   return (
-    <View style={styles.container}>
-      <FormProvider {...methods}>
-        <View style={styles.mainSection}>
+    <ScrollView>
+      <View style={styles.container}>
+        <FormProvider {...methods}>
           <EmailTextInput />
           <PasswordTextInput />
           <Text style={styles.forgotPassword} onPress={onForgotPassword}>
@@ -53,28 +53,24 @@ const LoginScreen = (props: LoginScreenProps) => {
           <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
             LOG IN
           </PrimaryButton>
-        </View>
-      </FormProvider>
-    </View>
+        </FormProvider>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 10,
+    marginVertical: 12,
     padding: 20,
+    gap: 15,
   },
   forgotPassword: {
     color: Colors.primary[300],
     textAlign: "center",
     textDecorationLine: "underline",
     fontSize: 16,
-  },
-  mainSection: {
-    flex: 5,
-    justifyContent: "flex-start",
-    gap: 15,
   },
 });
 
