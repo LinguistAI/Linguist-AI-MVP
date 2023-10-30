@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import {
   FormProvider,
   SubmitErrorHandler,
@@ -9,8 +10,12 @@ import PrimaryButton from "../components/PrimaryButton";
 import EmailTextInput from "../components/input/EmailTextInput";
 import PasswordTextInput from "../components/input/PasswordTextInput";
 import PrimaryTextInput from "../components/input/PrimaryTextInput";
+import useUser from "../hooks/auth/useUser";
 import useNotifications from "../hooks/useNotifications";
+import { login } from "../services/auth";
 import Colors from "../theme/colors";
+import { APIResponse } from "../types/common";
+import { generateErrorResponseMessage } from "../utils/httpUtils";
 
 type FormValues = {
   email: string;
@@ -23,6 +28,7 @@ interface LoginScreenProps {
 
 const LoginScreen = (props: LoginScreenProps) => {
   const { add } = useNotifications();
+  const { storeUserDetails } = useUser();
   const methods = useForm({
     defaultValues: {
       email: "",
@@ -30,13 +36,54 @@ const LoginScreen = (props: LoginScreenProps) => {
     },
   });
 
+  const { mutate: loginMutate, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (loginDto: LoginDto) =>
+      login({ email: loginDto.email, password: loginDto.password }),
+    onSuccess: (res) => {
+      console.log(res.data.data);
+      add({
+        body: res.data.msg,
+        title: "Success!",
+        type: "success",
+        time: 5000,
+      });
+
+      if (res.data.data) {
+        storeUserDetails(res.data.data);
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: "Main" }],
+        });
+      } else {
+        add({
+          body: "Something went wrong!",
+          title:
+            "We are unable to log you in at the moment because we are unable to retrieve your user details. Please try again later",
+          type: "error",
+          time: 10000,
+        });
+      }
+    },
+
+    onError: (error: any) => {
+      add({
+        body: generateErrorResponseMessage(error),
+        title: "Error!",
+        type: "error",
+        time: 5000,
+      });
+    },
+  });
+
   const onForgotPassword = () => {
     props.navigation.navigate("Forgot Password");
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
-    props.navigation.navigate("Main");
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    loginMutate(data);
+
+    // props.navigation.navigate("Main");
   };
 
   const onError: SubmitErrorHandler<FormValues> = (errors, e) => {};
@@ -50,7 +97,10 @@ const LoginScreen = (props: LoginScreenProps) => {
           <Text style={styles.forgotPassword} onPress={onForgotPassword}>
             Forgot Password?
           </Text>
-          <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
+          <PrimaryButton
+            loading={isPending}
+            onPress={methods.handleSubmit(onSubmit, onError)}
+          >
             LOG IN
           </PrimaryButton>
         </FormProvider>

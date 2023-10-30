@@ -1,21 +1,20 @@
-import { AxiosError } from "axios";
 import { axiosBase } from "..";
 import { APIResponse } from "../../types/common";
 
-export async function login(loginDto: LoginDto) {}
+export async function login(loginDto: LoginDto) {
+  const res = await axiosBase.post<APIResponse<RLogin>>(
+    "/auth/login",
+    loginDto
+  );
+  return res;
+}
 
 export async function register(registerDto: RegisterDto) {
-  try {
-    const res = await axiosBase.post<APIResponse<RRegister>>(
-      "/auth/register",
-      registerDto
-    );
-    return res;
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      return error;
-    }
-  }
+  const res = await axiosBase.post<APIResponse<RRegister>>(
+    "/auth/register",
+    registerDto
+  );
+  return res;
 }
 
 export async function changePassword() {}

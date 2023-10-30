@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -12,7 +13,7 @@ import PasswordInputWithRequirements from "../containers/PasswordInputWithRequir
 import { Requirement } from "../containers/PasswordInputWithRequirements/Requirement";
 import useNotifications from "../hooks/useNotifications";
 import { login, register } from "../services/auth";
-import { isStatusOk } from "../utils/httpUtils";
+import { generateErrorResponseMessage, isStatusOk } from "../utils/httpUtils";
 
 type RegisterFormValues = {
   userName: string;
@@ -21,7 +22,11 @@ type RegisterFormValues = {
   repeatPassword: string;
 };
 
-const RegisterScreen = () => {
+interface RegisterScreenProps {
+  navigation: any;
+}
+
+const RegisterScreen = (props: RegisterScreenProps) => {
   const { add } = useNotifications();
   const methods = useForm<RegisterFormValues>({
     defaultValues: {
@@ -33,6 +38,37 @@ const RegisterScreen = () => {
     mode: "onSubmit",
   });
 
+  const { mutate: registerMutate, isPending } = useMutation({
+    mutationKey: ["register"],
+    mutationFn: (registerDto: RegisterDto) =>
+      register({
+        email: registerDto.email,
+        password: registerDto.password,
+        username: registerDto.username,
+      }),
+    onSuccess: (data) => {
+      add({
+        body: "You have successfully registered!",
+        title: "Success!",
+        type: "success",
+        time: 5000,
+      });
+
+      props.navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    },
+    onError: (error: any) => {
+      add({
+        body: generateErrorResponseMessage(error),
+        title: "Error!",
+        type: "error",
+        time: 5000,
+      });
+    },
+  });
+
   const onSubmit = async (data: RegisterFormValues) => {
     const values = methods.getValues();
     const registerDto: RegisterDto = {
@@ -40,19 +76,7 @@ const RegisterScreen = () => {
       password: values.password,
       username: values.userName,
     };
-    const res = await register(registerDto);
-    if (res instanceof AxiosError) {
-      add({
-        title: "Network Error",
-        body: "There has been an issue while trying to reach to our servers. Please try again.",
-      });
-      return;
-    }
-
-    add({
-      title: "Registration Successful",
-      body: "You've successfully registered.",
-    });
+    registerMutate(registerDto);
   };
 
   const onError = (errors: any, e: any) => {
@@ -116,7 +140,10 @@ const RegisterScreen = () => {
                 "Passwords must match!",
             }}
           />
-          <PrimaryButton onPress={methods.handleSubmit(onSubmit, onError)}>
+          <PrimaryButton
+            loading={isPending}
+            onPress={methods.handleSubmit(onSubmit, onError)}
+          >
             REGISTER
           </PrimaryButton>
         </FormProvider>
