@@ -3,13 +3,19 @@ package app.linguistai.bmvp.service;
 import app.linguistai.bmvp.exception.NotFoundException;
 import app.linguistai.bmvp.model.Conversation;
 import app.linguistai.bmvp.model.Message;
+import app.linguistai.bmvp.model.User;
+import app.linguistai.bmvp.repository.IAccountRepository;
 import app.linguistai.bmvp.repository.IConversationRepository;
 import app.linguistai.bmvp.repository.IMessageRepository;
 import app.linguistai.bmvp.request.QMessage;
 import app.linguistai.bmvp.response.RMessage;
 import app.linguistai.bmvp.response.RMessagePair;
+import app.linguistai.bmvp.security.JWTFilter;
+import app.linguistai.bmvp.security.JWTUtils;
+import app.linguistai.bmvp.service.gamification.UserStreakService;
 import app.linguistai.bmvp.utils.mapper.MessageMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
@@ -20,15 +26,31 @@ import java.util.Optional;
 @Service
 @Qualifier("no-llm-message-service")
 public class MessageService implements IMessageService {
+    private final UserStreakService userStreakService;
+
     private final IMessageRepository messageRepository;
 
     private final IConversationRepository conversationRepository;
 
+    private final IAccountRepository accountRepository;
+
+    @Autowired
+    private final JWTUtils jwtUtils;
+
     private final String MODEL_NAME = "Model";
 
     @Override
-    public RMessagePair sendMessage(QMessage qMessage) throws Exception {
+    public RMessagePair sendMessage(QMessage qMessage, String token) throws Exception {
         try {
+            String email = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(token));
+            Optional<User> optionalUser = accountRepository.findUserByEmail(email);
+
+            if (optionalUser.isEmpty()) {
+                throw new NotFoundException("User does not exist for given email: [" + email + "].");
+            }
+
+            User senderUser = optionalUser.get();
+
             Optional<Conversation> optionalConversation = conversationRepository.findById(qMessage.getConversationId());
 
             if (optionalConversation.isEmpty()) {
@@ -38,7 +60,7 @@ public class MessageService implements IMessageService {
             Message message = new Message();
             message.setConversation(optionalConversation.get());
             message.setContent(qMessage.getContent());
-            message.setSender(qMessage.getSender());
+            message.setSender(senderUser.getUsername());
             message.setReceiver(MODEL_NAME);
             message.setTimestamp(Timestamp.from(Instant.now()));
 
@@ -46,6 +68,9 @@ public class MessageService implements IMessageService {
 
             // replyMessage = reply of LLM
             RMessage replyMessage = reply(savedMessage);
+
+            // If user sent a message and the model replied successfully, check whether to increase user streak or not
+            userStreakService.updateUserStreak(senderUser.getEmail());
 
             return MessageMapper.toRMessagePair(MessageMapper.toRMessage(savedMessage), replyMessage);
         }

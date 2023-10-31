@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,9 @@ public class MessageController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping
-    public ResponseEntity<Object> sendMessage(@Valid @RequestBody QMessage qMessage) {
+    public ResponseEntity<Object> sendMessage(@Valid @RequestBody QMessage qMessage, @RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
         try {
-            return Response.create("Successfully sent Message", HttpStatus.OK, messageService.sendMessage(qMessage));
+            return Response.create("Successfully sent Message", HttpStatus.OK, messageService.sendMessage(qMessage, auth));
         }
         catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
