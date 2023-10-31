@@ -33,9 +33,9 @@ public class UserStreakController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping
-    public ResponseEntity<Object> getUserStreakByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
+    public ResponseEntity<Object> getUserStreakByToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String auth) {
         try {
-            return Response.create("Successfully fetched UserStreak", HttpStatus.OK, userStreakService.getUserStreak(auth));
+            return Response.create("Successfully fetched UserStreak", HttpStatus.OK, userStreakService.getUserStreakByToken(auth));
         }
         catch (NotFoundException e1) {
             return Response.create("UserStreak does not exist for user email", HttpStatus.INTERNAL_SERVER_ERROR);

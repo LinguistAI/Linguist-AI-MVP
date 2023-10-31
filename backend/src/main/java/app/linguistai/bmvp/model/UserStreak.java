@@ -18,10 +18,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_streak")
 @NoArgsConstructor
 public class UserStreak {
+    @NotNull
     @Id
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey())
     private User user;
