@@ -11,6 +11,7 @@ import app.linguistai.bmvp.security.JWTFilter;
 import app.linguistai.bmvp.security.JWTUtils;
 import app.linguistai.bmvp.utils.DateUtils;
 import app.linguistai.bmvp.utils.mapper.ConversationMapper;
+import app.linguistai.bmvp.utils.mapper.MessageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,13 @@ public class ConversationService {
             }
 
             Conversation conversation = optionalConversation.get();
-            return ConversationMapper.toRConversation(conversation, Boolean.FALSE, messageRepository.findAllByConversationConversationId(conversation.getConversationId()));
+            return ConversationMapper.toRConversation(
+                    conversation,
+                    Boolean.FALSE,
+                    MessageMapper.toRMessageList(
+                            messageRepository.findAllByConversationConversationIdOrderByTimestampDesc(conversation.getConversationId())
+                    )
+            );
         }
         catch (Exception e) {
             System.out.println("ERROR: Could not fetch Conversation.");

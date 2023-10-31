@@ -1,6 +1,5 @@
 package app.linguistai.bmvp.response;
 
-import app.linguistai.bmvp.model.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.sql.Date;
@@ -16,5 +15,5 @@ public class RConversation {
     private Date date;
     private String title;
     private Boolean isNewConversation;
-    private List<Message> messages;
+    private List<RMessage> messages;
 }
