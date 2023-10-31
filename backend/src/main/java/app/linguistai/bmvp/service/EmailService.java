@@ -91,18 +91,18 @@ public class EmailService {
 		}
 	}
 
-	private MultipartFile convertImage(String imagePath) throws Exception{
+	private MultipartFile convertImage(String imagePath) throws Exception {
 		try {
 			Resource resource = new ClassPathResource(imagePath);
 			byte[] imageBytes = resource.getInputStream().readAllBytes();
+
 			String[] parts = imagePath.split("\\.");
 			String extension;
-			if (parts.length > 1) {
-				extension = parts[parts.length - 1].toLowerCase();
-			}
-			else{
+			if (parts.length <= 1) {
 				throw new Exception("ERROR: Could not determine the image extension.");
 			}
+			extension = parts[parts.length - 1].toLowerCase();
+
 			return new MockMultipartFile(
 					imagePath, imagePath, "image/" + extension, imageBytes);
 		} catch (Exception e) {

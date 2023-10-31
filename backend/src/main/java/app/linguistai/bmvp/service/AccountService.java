@@ -184,7 +184,7 @@ public class AccountService {
         }
     }
 
-    public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception{
+    public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception {
         try {
             User user = accountRepository.findUserByEmail(email).orElse(null);
             if (user == null) {
@@ -192,7 +192,7 @@ public class AccountService {
             }
 
             ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
-            if(resetToken == null) {
+            if (resetToken == null) {
                 throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
             }
 
@@ -216,7 +216,7 @@ public class AccountService {
         return resetToken.getValidUntil() != null && !resetToken.getValidUntil().before(new Date()) && !resetToken.isUsed();
     }
 
-    public boolean setPassword(String email, String password) throws Exception{
+    public boolean setPassword(String email, String password) throws Exception {
         User user = accountRepository.findUserByEmail(email).orElse(null);
         if (user == null) {
             throw new NotFoundException("User with email [" + email + "] not found");
