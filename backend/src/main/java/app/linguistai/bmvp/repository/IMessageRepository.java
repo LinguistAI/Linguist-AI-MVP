@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface IMessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findAllByConversationConversationId(UUID conversationId);
+    List<Message> findAllByConversationConversationIdOrderByTimestampDesc(UUID conversationId);
 }
