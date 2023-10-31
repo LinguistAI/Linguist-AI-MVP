@@ -41,7 +41,7 @@ public class EmailService {
 			helper.setText(htmlText, true);
 
 			mailSender.send(message);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send email.");
 			throw e;
 		}
@@ -64,7 +64,7 @@ public class EmailService {
 			helper.getMimeMultipart().getBodyPart("<" + image.getName() + ">").setFileName(attachmentName);
 
 			mailSender.send(message);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send email with inline image.");
 			throw e;
 		}
@@ -85,7 +85,7 @@ public class EmailService {
 			String htmlText = templateEngine.process("forgot-password", context);
 			String subject = "Password reset request";
 			sendEmail(recipientEmail, subject, htmlText, image, LOGO_ATTACHMENT_FILE_NAME);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("ERROR: Could not send password reset email.");
 			throw e;
 		}

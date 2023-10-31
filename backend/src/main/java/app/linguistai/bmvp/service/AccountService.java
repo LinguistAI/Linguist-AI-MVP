@@ -192,7 +192,7 @@ public class AccountService {
             }
 
             ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
-            if(resetToken == null){
+            if(resetToken == null) {
                 throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
             }
 
@@ -200,19 +200,19 @@ public class AccountService {
                 return false;
             }
 
-            if (invalidate){
+            if (invalidate) {
                 resetToken.setUsed(true);
                 resetTokenRepository.save(resetToken);
             }
             return true;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Password reset token validation exception");
             throw e;
         }
     }
 
-    private boolean isResetTokenValid(ResetToken resetToken){
+    private boolean isResetTokenValid(ResetToken resetToken) {
         return resetToken.getValidUntil() != null && !resetToken.getValidUntil().before(new Date()) && !resetToken.isUsed();
     }
 

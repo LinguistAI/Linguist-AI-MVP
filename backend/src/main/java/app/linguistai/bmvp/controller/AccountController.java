@@ -113,7 +113,7 @@ public class AccountController {
             ResetToken resetToken = accountService.generateEmailToken(resetPasswordInfo.getEmail());
             emailService.sendPasswordResetEmail(resetPasswordInfo.getEmail(), resetToken);
             return Response.create("Password reset email is sent", HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -124,7 +124,7 @@ public class AccountController {
         try {
             ResetToken resetToken = accountService.generateEmailToken(resetPasswordInfo.getEmail());
             return Response.create("Reset token is generated", HttpStatus.OK, resetToken);
-        } catch (Exception e){
+        } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

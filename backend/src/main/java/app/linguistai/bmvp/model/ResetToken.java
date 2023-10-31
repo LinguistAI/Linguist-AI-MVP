@@ -51,7 +51,7 @@ public class ResetToken {
 				(new java.util.Date(), 0, 0, RESET_TOKEN_TIME_LIMIT_MINUTES)).getTime());
 	}
 
-	public int getTimeLimitInMinutes(){
+	public int getTimeLimitInMinutes() {
 		return RESET_TOKEN_TIME_LIMIT_MINUTES;
 	}
 }
