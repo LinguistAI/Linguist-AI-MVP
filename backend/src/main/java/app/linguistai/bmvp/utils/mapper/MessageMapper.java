@@ -7,12 +7,12 @@ import app.linguistai.bmvp.response.RMessagePair;
 public class MessageMapper {
     public static RMessage toRMessage(Message message) {
         return new RMessage(
-                message.getMessageId(),
-                message.getConversation().getConversationId(),
-                message.getContent(),
-                message.getSender(),
-                message.getReceiver(),
-                message.getTimestamp()
+            message.getMessageId(),
+            message.getConversation().getConversationId(),
+            message.getContent(),
+            message.getSender(),
+            message.getReceiver(),
+            message.getTimestamp()
         );
     }
 
