@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IMessageRepository extends JpaRepository<Message, UUID> {
-    List<Message> findAllByConversationId(UUID conversationId);
+    List<Message> findAllByConversationConversationId(UUID conversationId);
 }

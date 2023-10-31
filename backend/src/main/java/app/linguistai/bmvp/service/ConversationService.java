@@ -10,6 +10,7 @@ import app.linguistai.bmvp.response.RConversation;
 import app.linguistai.bmvp.security.JWTFilter;
 import app.linguistai.bmvp.security.JWTUtils;
 import app.linguistai.bmvp.utils.DateUtils;
+import app.linguistai.bmvp.utils.mapper.ConversationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class ConversationService {
             }
 
             Conversation conversation = optionalConversation.get();
-            return new RConversation(conversation, Boolean.FALSE, messageRepository.findAllByConversationId(conversation.getConversationId()));
+            return ConversationMapper.toRConversation(conversation, Boolean.FALSE, messageRepository.findAllByConversationConversationId(conversation.getConversationId()));
         }
         catch (Exception e) {
             System.out.println("ERROR: Could not fetch Conversation.");
@@ -81,7 +82,7 @@ public class ConversationService {
             newConversation.setDate(DateUtils.convertUtilDateToSqlDate(Calendar.getInstance().getTime()));
             newConversation.setTitle("Conversation");
 
-            return new RConversation(conversationRepository.save(newConversation), Boolean.TRUE, Collections.emptyList());
+            return ConversationMapper.toRConversation(conversationRepository.save(newConversation), Boolean.TRUE, Collections.emptyList());
         }
         catch (Exception e) {
             System.out.println("ERROR: Could not create Conversation.");
