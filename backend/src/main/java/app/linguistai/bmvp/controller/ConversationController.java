@@ -1,7 +1,6 @@
 package app.linguistai.bmvp.controller;
 
 import app.linguistai.bmvp.exception.ExceptionLogger;
-import app.linguistai.bmvp.exception.NotFoundException;
 import app.linguistai.bmvp.response.Response;
 import app.linguistai.bmvp.service.ConversationService;
 import lombok.AllArgsConstructor;
@@ -22,8 +21,8 @@ public class ConversationController {
         try {
             return Response.create("Successfully fetched Conversation", HttpStatus.OK, conversationService.getConversationByToken(auth));
         }
-        catch (Exception e2) {
-            return Response.create(ExceptionLogger.log(e2), HttpStatus.INTERNAL_SERVER_ERROR);
+        catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
