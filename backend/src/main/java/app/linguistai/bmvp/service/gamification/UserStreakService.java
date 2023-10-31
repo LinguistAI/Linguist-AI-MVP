@@ -55,7 +55,7 @@ public class UserStreakService {
                 return incrementUserStreak(userStreak);
             }
             // Streak must be reset || (edge case, if last login is after current time) Streak must be reset
-            else if (daysDifference > 1 || daysDifference < 1) {
+            else if (daysDifference != 1) {
                 return resetUserStreak(userStreak);
             }
             // else if (daysDifference == 0), Do nothing. Maybe later add hello again message?
@@ -106,9 +106,9 @@ public class UserStreakService {
         }
     }
 
-    public UserStreak getUserStreak(String auth) throws Exception {
+    public UserStreak getUserStreakByToken(String token) throws Exception {
         try {
-            String email = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(auth));
+            String email = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(token));
             return getUserStreakWithEmail(email);
         }
         catch (NotFoundException e1) {
@@ -124,7 +124,7 @@ public class UserStreakService {
         try {
             Optional<UserStreak> optionalStreak = userStreakRepository.findByUserEmail(email);
 
-            if (!optionalStreak.isPresent()) {
+            if (optionalStreak.isEmpty()) {
                 throw new NotFoundException("UserStreak does not exist for given email: [" + email + "].");
             }
 
