@@ -1,7 +1,12 @@
 package app.linguistai.bmvp.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import app.linguistai.bmvp.exception.NotFoundException;
+import app.linguistai.bmvp.model.ResetToken;
+import app.linguistai.bmvp.repository.IResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +34,7 @@ public class AccountService {
 
     // @Autowired
     private final IAccountRepository accountRepository;
+    private final IResetTokenRepository resetTokenRepository;
     private final JWTUserService jwtUserService;
 
     @Autowired
@@ -157,4 +163,68 @@ public class AccountService {
             throw e;
         }       
     }
+
+    public ResetToken generateEmailToken(String email) throws Exception {
+        try {
+            User user = accountRepository.findUserByEmail(email).orElse(null);
+            if (user == null) {
+                throw new NotFoundException("User with email [" + email + "] not found");
+            }
+            // invalidate previous reset tokens of user
+            List<ResetToken> resetTokens = resetTokenRepository.findAllByUser(user);
+            for (ResetToken resetToken: resetTokens) {
+                resetToken.setUsed(true);
+            }
+            // create a new reset token
+            ResetToken resetToken = new ResetToken(user);
+            return resetTokenRepository.save(resetToken);
+        } catch (Exception e) {
+            System.out.println("Email token generation exception for email");
+            throw e;
+        }
+    }
+
+    public boolean validateResetCode(String email, String resetCode, boolean invalidate) throws Exception {
+        try {
+            User user = accountRepository.findUserByEmail(email).orElse(null);
+            if (user == null) {
+                throw new NotFoundException("User with email [" + email + "] not found");
+            }
+
+            ResetToken resetToken = resetTokenRepository.findByUserAndResetCode(user, resetCode).orElse(null);
+            if (resetToken == null) {
+                throw new NotFoundException("Reset token for user with email [" + user.getEmail() + "] with code [" + resetCode + "] not found.");
+            }
+
+            if (!isResetTokenValid(resetToken)) {
+                return false;
+            }
+
+            if (invalidate) {
+                resetToken.setUsed(true);
+                resetTokenRepository.save(resetToken);
+            }
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Password reset token validation exception");
+            throw e;
+        }
+    }
+
+    private boolean isResetTokenValid(ResetToken resetToken) {
+        return resetToken.getValidUntil() != null && !resetToken.getValidUntil().before(new Date()) && !resetToken.isUsed();
+    }
+
+    public boolean setPassword(String email, String password) throws Exception {
+        User user = accountRepository.findUserByEmail(email).orElse(null);
+        if (user == null) {
+            throw new NotFoundException("User with email [" + email + "] not found");
+        }
+        String hashedPassword = encodePassword(password);
+        user.setPassword(hashedPassword);
+        int rowsAffected = accountRepository.updatePassword(hashedPassword, user.getId());
+        return rowsAffected > 0;
+    }
+
 }

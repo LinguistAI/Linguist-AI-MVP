@@ -26,11 +26,15 @@ public class SecurityConfig {
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	private static final String[] AUTH_WHITELIST = {
-		"/v3/api-docs/**",
-		"/swagger-ui/**",
-		"/api/v1/auth/hello",
-		"/api/v1/auth/login",
-		"/api/v1/auth/register"
+			"/v3/api-docs/**",
+			"/swagger-ui/**",
+			"/api/v1/auth/hello",
+			"/api/v1/auth/login",
+			"/api/v1/auth/register",
+			"/api/v1/auth/request-reset",
+			"/api/v1/auth/test-reset",
+			"/api/v1/auth/validate-reset",
+			"/api/v1/auth/reset-password"
 	};
 
 	@Bean
